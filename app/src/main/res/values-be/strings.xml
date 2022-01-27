@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Photo-English</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="countries">
+        <item name="ru">Руская мова</item>
+        <item name="ukrain">Украінская мова</item>
+        <item name="bl">Беларуская мова</item>
+    </string-array>
+
+    <string name="set_lang">Мова перекладу</string>
+    <string name="allow_noti">Апавяшчэння</string>
+
+    <string name="progress_dial">Калі ласка пачакайце.</string>
+    <string name="download_dial">Ўстаноўка моўнай мадэлі</string>
+
+    <string name="add">Дадаць</string>
+    <string name="dict">Слоўнік</string>
+
+    <string name="change">Рэдагаваць</string>
+    <string name="save">Захаваць змены</string>
+
+    <string name="reg">Рэгістрацыя</string>
+    <string name="login">Аўтарызацыя</string>
+
+    <string name="pass_rule">Не менш за 8 сімвалаў</string>
+    <string name="fill_fields">Запоўніце ўсе палі</string>
+    <string name="see_more">Падрабязна</string>
+
+    <string name="name">Імя</string>
+    <string name="surname">Прозвішча</string>
+    <string name="pass">Пароль</string>
+    <string name="pass_again">Пароль яшчэ раз</string>
+
+    <string name="dif_pass">Паролі не супадаюць</string>
+
+    <string name="other_image">Выберыце іншы малюнак</string>
+
+    <string name="chose_image">Выберыце малюнак</string>
+    <string name="confirm_email">пацвердзіць email</string>
+
+    <string name="testing">тэсціраванне</string>
+
+</resources>

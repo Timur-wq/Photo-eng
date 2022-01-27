@@ -1,0 +1,44 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Photo-English</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="countries">
+        <item name="ru">Русский</item>
+        <item name="ukrain">Украинский</item>
+        <item name="bl">Белорусский</item>
+    </string-array>
+
+    <string name="set_lang">Язык перевода</string>
+    <string name="allow_noti">Уведомления</string>
+
+    <string name="progress_dial">Пожалуйста подождите...</string>
+    <string name="download_dial">Установка модели языка...</string>
+
+    <string name="add">Добавить</string>
+    <string name="dict">Словарь</string>
+
+    <string name="change">Изменить</string>
+    <string name="save">Сохранить</string>
+
+    <string name="reg">Регистрация</string>
+    <string name="login">Вход</string>
+
+    <string name="pass_rule">Не менее 8 символов</string>
+    <string name="fill_fields">Заполните все поля</string>
+    <string name="see_more">Подробнее</string>
+
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="pass">Пароль</string>
+    <string name="pass_again">Пароль ещё раз</string>
+
+    <string name="dif_pass">Пароли не совпадают</string>
+
+    <string name="other_image">Выберите другое изображение</string>
+
+    <string name="chose_image" tools:ignore="MissingTranslation">Выберите изображение</string>
+    <string name="confirm_email">Подтвердить email</string>
+
+    <string name="testing">тестирование</string>
+
+</resources>

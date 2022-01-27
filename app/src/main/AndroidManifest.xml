@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.myapplication">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".StartTest"
+                android:exported="true"/>
+        <activity
+                android:name=".TestActivity"
+                android:exported="true"/>
+        <activity
+                android:name=".WebViewActivity"
+                android:exported="true"
+                android:screenOrientation="portrait"/>
+
+        <meta-data
+                android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+                android:value="label"/>
+
+        <activity
+                android:name=".ExtraInfo"
+                android:screenOrientation="portrait">
+        </activity>
+
+        <receiver android:name=".MyRec"/>
+
+        <activity
+                android:name=".ProfileEditor"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".Registration"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".Authorisation"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".Profile"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".Settings"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".MainActivity"
+                android:screenOrientation="portrait">
+        </activity>
+
+        <receiver
+                android:name=".alarm.AlarmReceiver"
+                android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

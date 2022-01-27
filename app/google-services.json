@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "352934292338",
+    "firebase_url": "https://photo-english-9c76f-default-rtdb.firebaseio.com",
+    "project_id": "photo-english-9c76f",
+    "storage_bucket": "photo-english-9c76f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352934292338:android:2aff6bfcb615c297d28beb",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352934292338-1l8ioegn1lbgnedcn33g1es1u3cpk11f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "58e9a252875ef8d089b12f52830e148b9a7c6ef7"
+          }
+        },
+        {
+          "client_id": "352934292338-pogbvbj3ot0469b4aop2lmlok9i48d38.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnK4aDY1caCGkbmZK6oqAoRD0SBHtzwKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352934292338-pogbvbj3ot0469b4aop2lmlok9i48d38.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
