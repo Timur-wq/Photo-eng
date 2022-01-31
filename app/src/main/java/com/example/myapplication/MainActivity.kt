@@ -54,11 +54,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.selectedItemId = R.id.home
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.profile -> {i = Intent(this, Profile::class.java)
-                    startActivity(i)
-                    overridePendingTransition(0, 0)
-                    finish()
-                }
                 R.id.settings ->{
                     i = Intent(this, Settings::class.java)
                     startActivity(i)

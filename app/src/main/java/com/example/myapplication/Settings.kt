@@ -60,12 +60,6 @@ class Settings : AppCompatActivity() {
                     overridePendingTransition(0, 0)
                     finish()
                 }
-                R.id.profile -> {
-                    i = Intent(this, Profile::class.java)
-                    startActivity(i)
-                    overridePendingTransition(0, 0)
-                    finish()
-                }
                 R.id.extra->{
                     i = Intent(this, StartTest::class.java)
                     startActivity(i)

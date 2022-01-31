@@ -18,8 +18,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
-import com.example.myapplication.ProfileEditor.Companion.IMAGE_PICK_CODE
-import com.example.myapplication.ProfileEditor.Companion.PERMISSION_CODE
 import com.example.myapplication.databinding.ActivityRegistrationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
