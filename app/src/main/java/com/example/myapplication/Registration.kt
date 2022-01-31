@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -16,12 +17,17 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
+import com.example.myapplication.ProfileEditor.Companion.PERMISSION_CODE
 import com.example.myapplication.databinding.ActivityRegistrationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
@@ -33,6 +39,8 @@ class Registration : AppCompatActivity() {
     lateinit var table: DatabaseReference
     lateinit var auth: FirebaseAuth
     lateinit var imageUri: Uri
+
+    lateinit var dialog: Dialog
 
     lateinit var downloadUri: String
 
@@ -82,11 +90,7 @@ class Registration : AppCompatActivity() {
             if(email.isNotEmpty() && password.isNotEmpty() && name1.isNotEmpty() && name2.isNotEmpty() && imageUri != null){
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this){task ->
                     if(task.isSuccessful){
-                        auth.currentUser?.sendEmailVerification()?.addOnSuccessListener {
-                            val toast = Toast.makeText(applicationContext, "Подтведите email", Toast.LENGTH_SHORT)
-                            toast.setGravity(Gravity.CENTER, 0, 0)
-                            toast.show()
-                        }
+                        downloadLangModel()
                         val i = Intent(this, Authorisation::class.java)
                         uploadImage()
                         startActivity(i)
@@ -100,6 +104,52 @@ class Registration : AppCompatActivity() {
 
 
         }
+    }
+
+    lateinit var options: TranslatorOptions
+    private fun downloadLangModel(){
+        val lang = Locale.getDefault().language
+
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.download_dial)
+        dialog.setCancelable(false)
+        dialog.show()
+
+
+        if(lang.equals("ru")){
+            options = TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(TranslateLanguage.RUSSIAN)
+                .build()
+
+        }else if(lang.equals("be")){
+            options= TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(TranslateLanguage.BELARUSIAN)
+                .build()
+        }
+        else if(lang.equals("uk")){
+            options = TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(TranslateLanguage.UKRAINIAN)
+                .build()
+        }
+
+
+        val translator = Translation.getClient(options)
+
+        val conditions = DownloadConditions.Builder()
+            .requireWifi()
+            .build()
+        translator.downloadModelIfNeeded(conditions)
+            .addOnSuccessListener {
+                if(dialog.isShowing){
+                    dialog.dismiss()
+                    putData()
+                }
+            }.addOnFailureListener{
+
+            }
     }
 
     private fun initDB(){
@@ -127,7 +177,7 @@ class Registration : AppCompatActivity() {
 
             }
         }*/
-        putData()
+
 
 
     }
