@@ -13,10 +13,12 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
+import com.example.myapplication.ProfileEditor.Companion.IMAGE_PICK_CODE
 import com.example.myapplication.ProfileEditor.Companion.PERMISSION_CODE
 import com.example.myapplication.databinding.ActivityRegistrationBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -92,7 +94,6 @@ class Registration : AppCompatActivity() {
                     if(task.isSuccessful){
                         downloadLangModel()
                         val i = Intent(this, Authorisation::class.java)
-                        uploadImage()
                         startActivity(i)
                     }
                 }
@@ -143,10 +144,7 @@ class Registration : AppCompatActivity() {
             .build()
         translator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {
-                if(dialog.isShowing){
-                    dialog.dismiss()
-                    putData()
-                }
+                uploadImage()
             }.addOnFailureListener{
 
             }
@@ -165,32 +163,30 @@ class Registration : AppCompatActivity() {
 
         val storage: FirebaseStorage = FirebaseStorage.getInstance()
         val ref = storage.getReference("avatars/${fileName}")
+        val uri = ref.downloadUrl.toString()
 
-
-        ref.putFile(imageUri)
-        /*val task = up.continueWithTask{task ->
-            if(!task.isSuccessful){}
-            ref.downloadUrl
-        }.addOnCompleteListener { task->
-            if(task.isSuccessful){
-                downloadUri = task.result.toString()
-
-            }
-        }*/
-
-
-
-    }
-    private fun putData(){
+        if(dialog.isShowing){
+            dialog.dismiss()
+        }
         val tableRef = auth.currentUser?.let { FirebaseDatabase.getInstance().getReference(it.uid) }
-        val appUser = AppUser(binding.name1.text.toString(), binding.name2.text.toString(), binding.email.text.toString(), binding.pass1.text.toString(), fileName)
+        val appUser = AppUser(binding.name1.text.toString(), binding.name2.text.toString(), binding.email.text.toString(), binding.pass1.text.toString(), imageUri.toString())
         tableRef?.push()?.setValue(appUser)
 
-        val bitmapDrawable = binding.imageView.drawable
-        val bitmap = bitmapDrawable.toBitmap()
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-        val arr = stream.toByteArray()
+        ref.putFile(imageUri).addOnSuccessListener {
+            finish()
+        }
+
+    }
+
+
+    private fun putData(){
+
+
+        //val bitmapDrawable = binding.imageView.drawable
+        //val bitmap = bitmapDrawable.toBitmap()
+        //val stream = ByteArrayOutputStream()
+        //bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+        //val arr = stream.toByteArray()
 
         /*lifecycleScope.launch {
             val db = Room.databaseBuilder(applicationContext, LocalDB::class.java, "avatars").build()
@@ -198,12 +194,12 @@ class Registration : AppCompatActivity() {
             db.getPhoto().insert(photoObj)
             finish()
         }*/
-        lifecycleScope.launch {
-            val db = Room.databaseBuilder(applicationContext, Database::class.java, "tunes").build()
-            val photoObj = Avatar(Random.nextInt(100), arr, Random.nextInt(100).toString())
-            db.playList().insert(photoObj)
-            finish()
-        }
+        //lifecycleScope.launch {
+        //    val db = Room.databaseBuilder(applicationContext, Database::class.java, "tunes").build()
+        //    val photoObj = Avatar(Random.nextInt(100), arr, Random.nextInt(100).toString())
+        //    db.playList().insert(photoObj)
+        //    finish()
+        //}
 
     }
 
@@ -222,7 +218,8 @@ class Registration : AppCompatActivity() {
         if(resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             binding.imageView.setImageURI(data?.data)
             if(data?.data != null){
-                imageUri = data.data!!
+                val bitmap = binding.imageView.drawable.toBitmap()
+                imageUri = data?.data!!
             }
 
         }

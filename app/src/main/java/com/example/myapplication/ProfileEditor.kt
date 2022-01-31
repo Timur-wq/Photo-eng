@@ -12,6 +12,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.Observer
 import androidx.room.Room
+import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ActivityProfileEditorBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -27,6 +28,7 @@ import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.random.Random
 
 class ProfileEditor : AppCompatActivity() {
@@ -52,15 +54,16 @@ class ProfileEditor : AppCompatActivity() {
         val Email: String? = intent.getStringExtra("email")
         val Name1: String? = intent.getStringExtra("name1")
         val Name2: String? = intent.getStringExtra("name2")
+        imgUri = intent.getStringExtra("uri")!!
+        val pass: String? = intent.getStringExtra("pass")
 
         binding.email.setText(Email)
         binding.name.setText(Name1)
         binding.surname.setText(Name2)
-
-        observer = Observer<ArrayList<AppUser>> {
-            binding.pass.setText(it.get(0).password)
-            imgUri = it.get(0).imgUri
-        }
+        binding.pass.setText(pass)
+        Glide.with(this)
+            .load(imgUri)
+            .into(binding.avatar)
 
         binding.pass.doOnTextChanged { text, start, before, count ->
             if(text?.length!! <= 7){
@@ -73,14 +76,15 @@ class ProfileEditor : AppCompatActivity() {
             auth = FirebaseAuth.getInstance()
             t = auth.currentUser?.let { it1 -> FirebaseDatabase.getInstance().getReference(it1.uid) }!!
             t.removeValue()
-            t = auth.currentUser?.let { it1 -> FirebaseDatabase.getInstance().getReference(it1.uid) }!!
+            t = auth.uid?.let { it1 -> FirebaseDatabase.getInstance().getReference(it1) }!!
+
 
 
             val user = auth.currentUser
             user!!.updateEmail(binding.email.text.toString())
             user!!.updatePassword(binding.pass.text.toString())
 
-            val i: Intent = Intent(this, Profile::class.java)
+            val i: Intent = Intent(this, MainActivity::class.java)
             startActivity(i)
             if(!isClicked){
                 dontApploadNewImage()
@@ -94,7 +98,6 @@ class ProfileEditor : AppCompatActivity() {
             pickNewImage()
         }
 
-        readUserData()
 
     }
     companion object{
@@ -128,24 +131,10 @@ class ProfileEditor : AppCompatActivity() {
         val now = Date()
         val fileName = formatter.format(now)
         val ref = FirebaseStorage.getInstance().getReference("avatars/${fileName}")
+        imgUri = ref.downloadUrl.toString()
         ref.putFile(imageUri)
-        val appUser = AppUser(binding.name.text.toString(), binding.surname.text.toString(), binding.email.text.toString(), binding.pass.text.toString(), fileName)
-        t.push().setValue(appUser)
+        val appUser = AppUser(binding.name.text.toString(), binding.surname.text.toString(), binding.email.text.toString(), binding.pass.text.toString(), imgUri)
 
-        lifecycleScope.launch{
-            val bitmapDrawable = binding.avatar.drawable
-            val bitmap = bitmapDrawable.toBitmap()
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            val bytes = stream.toByteArray()
-
-            val photo = Avatar(Random.nextInt(100), bytes, Random.nextInt(100).toString())
-
-            val db = Room.databaseBuilder(applicationContext, Database::class.java, "tunes").build()
-            db.playList().deleteAll()
-            db.playList().insert(photo)
-            finish()
-        }
 
     }
 
@@ -155,31 +144,6 @@ class ProfileEditor : AppCompatActivity() {
         finish()
     }
 
-    override fun onStart() {
-        super.onStart()
-        livaData.observe(this, observer)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        livaData.removeObserver(observer)
-    }
-
-    fun readUserData() {
-        val result = lifecycleScope.async {
-            val db = Room.databaseBuilder(applicationContext, Database::class.java, "tunes").build()
-            val res = db.playList().select1()
-
-            launch(Dispatchers.Main) {
-                val bytes = res?.get(0)?.photo
-                val iStr: InputStream = ByteArrayInputStream(bytes)
-                val o: BitmapFactory.Options = BitmapFactory.Options()
-                val bitmap = BitmapFactory.decodeStream(iStr, null, o)
-                binding.avatar.setImageBitmap(bitmap)
 
 
-                //binding.pass.text = res?.get(0)?.photo.toString()
-            }
-        }
-    }
 }
