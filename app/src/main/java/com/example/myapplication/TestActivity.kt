@@ -71,7 +71,7 @@ class TestActivity : AppCompatActivity() {
                 wordList.add(words.get(0) + "/" + words.get(1))
             }
             index++
-            if(index == 10){
+            if(index == 10 || index == newWordList.size){
                 var str1 = ""
                 for(i in wordList){
                     str1 += "$i;"

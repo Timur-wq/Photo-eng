@@ -21,7 +21,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import androidx.work.*
-import com.example.myapplication.alarm.AlarmReceiver
 import com.example.myapplication.databinding.ActivitySettingsBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.mlkit.common.model.DownloadConditions
@@ -46,7 +45,6 @@ class Settings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
-        createNotificationChannel()
         setContentView(binding.root)
         binding.bottomNavigation.background = null
         binding.bottomNavigation.selectedItemId = R.id.settings
@@ -227,27 +225,6 @@ class Settings : AppCompatActivity() {
         binding.apply {
             langSpinner.setSelection(language)
         }
-    }
-
-    private fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channel = NotificationChannel("photo-english International", "name1", NotificationManager.IMPORTANCE_HIGH)
-            val notificationManager = getSystemService(NotificationManager::class.java) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-
-        }
-    }
-
-    private fun getAlarmInfoIntent(): PendingIntent{
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun getActionPendingIntent(): PendingIntent{
-        val intent = Intent(this, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        return pendingIntent
     }
 
     companion object{

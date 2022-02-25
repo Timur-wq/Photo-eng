@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -225,15 +226,11 @@ class Dict : Fragment() {
 
                         val sharedPrefs = activity?.getSharedPreferences("dict", Context.MODE_PRIVATE)
                         val s = sharedPrefs?.getString("DictStr", "")
-                        if (s != null) {
-                            if(s.isEmpty()){
-                                val editor = sharedPrefs?.edit()
-                                editor.apply {
-                                    this!!.putString("DictStr", str)
-                                }?.apply()
-                            }
+                        val editor = sharedPrefs?.edit()
+                        editor.apply {
+                            this!!.putString("DictStr", str)
+                        }?.apply()
 
-                        }
 
 
                     }
