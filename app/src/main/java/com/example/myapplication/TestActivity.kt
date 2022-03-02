@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -62,6 +63,7 @@ class TestActivity : AppCompatActivity() {
                 binding.howCorrect.text = words.get(1)
             }
         }
+        var incorrect = 0
 
         binding.ok.setOnClickListener{
             binding.howCorrect.text = ""
@@ -69,6 +71,7 @@ class TestActivity : AppCompatActivity() {
             binding.button5.visibility =View.VISIBLE
             if(!binding.translation.text.toString().equals(words.get(1))) {
                 wordList.add(words.get(0) + "/" + words.get(1))
+                incorrect++
             }
             index++
             if(index == 10 || index == newWordList.size){
@@ -77,13 +80,18 @@ class TestActivity : AppCompatActivity() {
                     str1 += "$i;"
                 }
                 val editor = sharedPrefs.edit()
-                Toast.makeText(applicationContext, "$str1", Toast.LENGTH_SHORT).show()
                 editor.apply {
                     putString("DictStr", str1)
                 }.apply()
                 //val intent = Intent(activity?.applicationContext, MainActivity::class.java)
                 //startActivity(intent)
                 //activity?.finish()
+
+                val intent = Intent(applicationContext, ResultActivity::class.java)
+                intent.putExtra("size", newWordList.size)
+                intent.putExtra("mistakes", incorrect)
+                startActivity(intent)
+                finish()
             }
             else if(index < 10){
                 words = newWordList.get(index).split("/")

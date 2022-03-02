@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/correct.xml" value="0.26927083333333335" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/ic_baseline_cancel_24.xml" value="0.2703125" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/splash_screen.xml" value="0.2265" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_authorisation.xml" value="0.2" />
@@ -12,6 +13,7 @@
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_profile_editor.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_registration.xml" value="0.4" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_result.xml" value="0.2" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_settings.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_start_test.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_test.xml" value="0.25416666666666665" />
