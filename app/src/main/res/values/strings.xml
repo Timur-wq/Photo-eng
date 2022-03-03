@@ -36,6 +36,8 @@
 
     <string name="other_image">Выберите другое изображение</string>
 
+    <string name="res">Результат</string>
+
     <string name="chose_image" tools:ignore="MissingTranslation">Выберите изображение</string>
     <string name="confirm_email">Подтвердить email</string>
 

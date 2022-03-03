@@ -56,7 +56,8 @@ class TestActivity : AppCompatActivity() {
         binding.button5.setOnClickListener {
             binding.ok.visibility = View.VISIBLE
             binding.button5.visibility = View.INVISIBLE
-            if(binding.translation.text.toString().equals(words.get(1))){
+            val s = words.get(1).toLowerCase()
+            if((binding.translation.text.toString().toLowerCase()).equals(s)){
                 binding.ln.setBackgroundColor(Color.argb(100, 100, 255, 100))
             }else{
                 binding.ln.setBackgroundColor(Color.argb(100, 255, 100, 100))
@@ -69,7 +70,8 @@ class TestActivity : AppCompatActivity() {
             binding.howCorrect.text = ""
             binding.ok.visibility = View.INVISIBLE
             binding.button5.visibility =View.VISIBLE
-            if(!binding.translation.text.toString().equals(words.get(1))) {
+            val s = words.get(1).toLowerCase()
+            if(!binding.translation.text.toString().toLowerCase().equals(s)) {
                 wordList.add(words.get(0) + "/" + words.get(1))
                 incorrect++
             }

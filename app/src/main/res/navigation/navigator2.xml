@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigator2"
+    app:startDestination="@id/test">
+
+    <fragment
+        android:id="@+id/test"
+        android:name="com.example.myapplication.Test"
+        android:label="activity_test"
+        tools:layout="@layout/activity_test" >
+        <action
+            android:id="@+id/action_test_to_resultActivity"
+            app:destination="@id/resultActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="size"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="mistakes"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <activity
+        android:id="@+id/resultActivity"
+        android:name="com.example.myapplication.ResultActivity"
+        android:label="ResultActivity" />
+</navigation>

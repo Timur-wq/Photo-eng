@@ -41,4 +41,6 @@
 
     <string name="confirm_email">підтвердити email</string>
     <string name="testing">тестування</string>
+
+    <string name="res">Результат</string>
 </resources>
