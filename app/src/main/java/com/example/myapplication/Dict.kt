@@ -204,7 +204,9 @@ class Dict : Fragment() {
         val translator = Translation.getClient(options)
         var j = 0
 
-        wordLi = wordLi.distinct() as MutableList<String>
+        if(wordLi.size > 0) {
+            wordLi = wordLi.distinct() as MutableList<String>
+        }
         var str = ""
 
         for(i in wordLi){
