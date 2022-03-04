@@ -91,8 +91,6 @@ class Registration : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this){task ->
                     if(task.isSuccessful){
                         downloadLangModel()
-                        val i = Intent(this, Authorisation::class.java)
-                        startActivity(i)
                     }
                 }
             }else{
@@ -162,14 +160,17 @@ class Registration : AppCompatActivity() {
         val ref = storage.getReference("avatars/${fileName}")
         val uri = ref.downloadUrl.toString()
 
-        if(dialog.isShowing){
-            dialog.dismiss()
-        }
+
         val tableRef = auth.currentUser?.let { FirebaseDatabase.getInstance().getReference(it.uid) }
         val appUser = AppUser(binding.name1.text.toString(), binding.name2.text.toString(), binding.email.text.toString(), binding.pass1.text.toString(), imageUri.toString())
         tableRef?.push()?.setValue(appUser)
 
         ref.putFile(imageUri).addOnSuccessListener {
+            val i = Intent(this, Authorisation::class.java)
+            startActivity(i)
+            if(dialog.isShowing){
+                dialog.dismiss()
+            }
             finish()
         }
 
