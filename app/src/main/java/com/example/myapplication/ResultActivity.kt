@@ -4,7 +4,9 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
@@ -23,6 +25,8 @@ class ResultActivity : AppCompatActivity() {
         val tvR = findViewById<TextView>(R.id.textView7)
         tvG.text = (size - mistakes).toInt().toString()
         tvR.text = mistakes.toInt().toString()
+        val gP = findViewById<ImageView>(R.id.imageView5)
+        val rP = findViewById<ImageView>(R.id.imageView6)
 
         val tvRes = findViewById<TextView>(R.id.textView5)
         tvRes.text = (100*(size-mistakes)/size).toString() + "%"
@@ -49,6 +53,12 @@ class ResultActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        val anim = AnimationUtils.loadAnimation(this, R.anim.scaling)
+        gP.startAnimation(anim)
+        rP.startAnimation(anim)
+        tvG.startAnimation(anim)
+        tvR.startAnimation(anim)
 
     }
 }

@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -45,6 +46,9 @@ class ExtraRecyclerAdapter(val itemLi: ArrayList<ExtraItem>, private val listene
         val currentItem = itemLi[position]
         holder.itemTextEng.text = currentItem.engWord
         holder.itemTextRu.text = currentItem.ruWord
+
+        //val anim = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.slide_in)
+        //holder.itemView.startAnimation(anim)
     }
 
     override fun getItemCount(): Int {

@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -214,6 +217,11 @@ class Dict : Fragment() {
                     itemLi.add(item)
                     if(j == wordLi.size){
                         binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext)
+
+                        val lac = LayoutAnimationController(AnimationUtils.loadAnimation(activity, R.anim.slide_in))
+                        lac.delay = 0.20f
+                        lac.order = LayoutAnimationController.ORDER_NORMAL
+                        binding.recView.layoutAnimation = lac
                         val adapter = ExtraRecyclerAdapter(itemLi as ArrayList<ExtraItem>, object : onItemClickListener{
                             override fun OnItemClick(position: Int) {
                                 val i = Intent(activity?.applicationContext, WebViewActivity::class.java)

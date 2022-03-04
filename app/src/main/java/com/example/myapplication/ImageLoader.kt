@@ -18,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -92,6 +93,7 @@ class ImageLoader : Fragment() {
         }
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -304,6 +306,11 @@ class ImageLoader : Fragment() {
 
                                 })
                                 binding.recView.adapter = adapter
+
+                                val lac = LayoutAnimationController(AnimationUtils.loadAnimation(activity, R.anim.slide_in))
+                                lac.delay = 0.20f
+                                lac.order = LayoutAnimationController.ORDER_NORMAL
+                                binding.recView.layoutAnimation = lac
 
                                 binding.cansel.visibility = View.VISIBLE
                                 binding.tick.visibility = View.VISIBLE
