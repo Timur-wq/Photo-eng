@@ -3,27 +3,23 @@ package com.example.myapplication
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.UserModels.RecyclerViewModel
 import com.example.myapplication.databinding.FragmentDictBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,7 +41,10 @@ class Dict : Fragment() {
     lateinit var table: DatabaseReference
     lateinit var auth: FirebaseAuth
 
-    lateinit var recViewAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>
+    lateinit var dialog: Dialog
+
+    private val recyclerViewModel: RecyclerViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,14 +60,20 @@ class Dict : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDictBinding.inflate(layoutInflater, container, false)
-        // Inflate the layout for this fragment
 
-
-        getData()
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dialog = activity?.let { Dialog(it) }!!//инициализируем диалог, который будет отображаться во время загрузки
+        initLoadingDialog(dialog)
 
+        //загружаем словарь с Firebase через ViewModel
+        recyclerViewModel.translatorData.observe(activity as LifecycleOwner, {
+            translate(it)
+        })
+    }
 
     companion object {
         /**
@@ -93,45 +98,28 @@ class Dict : Fragment() {
     }
     var lablesLi = mutableListOf<MutableList<String>>()
     var wordLi = mutableListOf<String>()
-    var imageList = mutableListOf<Bitmap>()
-    var itemList = mutableListOf<ListItem>()
     var itemLi = mutableListOf<ExtraItem>()
 
-    private fun getData() {
-        val dialog = activity?.let { Dialog(it) }
-        dialog?.setContentView(R.layout.progress_dialog)
-        dialog?.setCancelable(false)
-        dialog?.show()
-
-        auth = FirebaseAuth.getInstance()
-        table = FirebaseDatabase.getInstance().getReference(auth?.uid!!).child("Dict")
-        val vListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(dialog?.isShowing!!){
-                    dialog.dismiss()
-                }
-                for (i in snapshot.children) {
-                    var model = i.getValue(Dictonary::class.java)
-                    model?.wordList?.let { lablesLi.add(it) }
-                }
-                translate(lablesLi)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        }
-        table.addValueEventListener(vListener)
+    private fun initLoadingDialog(dialog: Dialog){
+        dialog.setContentView(R.layout.progress_dialog)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
-    fun translate(wordLi1: MutableList<MutableList<String>>){
+    private fun getLanguageFromSettings(): String{
         val sharedPrefs = activity?.getSharedPreferences("prefs", Context.MODE_PRIVATE)
         val langId = sharedPrefs?.getInt("Lang", 0)
         val res = activity?.applicationContext?.resources
         val langArr = res?.getStringArray(R.array.countries)
-        val lang = langId?.let { langArr?.get(it) }//получаем язык, на который надо перевести
-
+        val lang = langId?.let { langArr?.get(it) }
+        return lang.toString()
+    }
+    private fun translate(wordLi1: MutableList<MutableList<String>>){
+        if(dialog.isShowing){
+            dialog.dismiss()
+        }
+        //получаем язык, на который надо перевести
+        val lang = getLanguageFromSettings()
 
         var options = TranslatorOptions.Builder()
             .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -200,7 +188,6 @@ class Dict : Fragment() {
             }
         }
 
-
         val translator = Translation.getClient(options)
         var j = 0
 
@@ -215,101 +202,42 @@ class Dict : Fragment() {
                 .addOnSuccessListener {
                     val item = ExtraItem(i, it)
                     str += "$i/" + "$it;"
-                    //dbList.add(item1)
                     itemLi.add(item)
                     if(j == wordLi.size){
-                        binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext)
-
-                        val lac = LayoutAnimationController(AnimationUtils.loadAnimation(activity, R.anim.slide_in))
-                        lac.delay = 0.20f
-                        lac.order = LayoutAnimationController.ORDER_NORMAL
-                        binding.recView.layoutAnimation = lac
-                        val adapter = ExtraRecyclerAdapter(itemLi as ArrayList<ExtraItem>, object : onItemClickListener{
-                            override fun OnItemClick(position: Int) {
-                                val i = Intent(activity?.applicationContext, WebViewActivity::class.java)
-                                i.putExtra("Word", wordLi.get(position))
-                                startActivity(i)
-                            }
-
-                        })
-                        binding.recView.adapter = adapter
-
-                        val sharedPrefs = activity?.getSharedPreferences("dict", Context.MODE_PRIVATE)
-                        val s = sharedPrefs?.getString("DictStr", "")
-                        val editor = sharedPrefs?.edit()
-                        editor.apply {
-                            this!!.putString("DictStr", str)
-                        }?.apply()
-
-
-
+                        initRecyclerView()//инициализируем анимированный список слов
+                        putWordsIntoSharedPrefs(str)//записываем строку в shared preferences
                     }
 
                 }.addOnFailureListener{
 
                 }
         }
-
-
-        /*private fun getData(){
-            val dialog = activity?.let { Dialog(it) }
-            dialog?.setContentView(R.layout.progress_dialog)
-            dialog?.setCancelable(false)
-            dialog?.show()
-
-            auth = FirebaseAuth.getInstance()
-            table = FirebaseDatabase.getInstance().getReference(auth?.uid!!).child("Dict")
-            val vListener = object: ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for(i in snapshot.children){
-                        var model = i.getValue(Dictonary::class.java)
-                        model?.wordList?.let { lablesLi.add(it) }
-                        model?.imgUri?.let { urisLi.add(it) }
-                    }
-
-                    for(i in urisLi){
-                        val storage = FirebaseStorage.getInstance().reference.child("detected/${i}jpg")
-                        val storgae1 = storage
-                        storage.getBytes(1024*1024).addOnSuccessListener {
-                            if(dialog?.isShowing!!){
-                                dialog.dismiss()
-                            }
-                            val bitmap = BitmapFactory.decodeByteArray(it, 0, (it.size).toInt())
-                            val k: Float = getMetrics1() * getDensity()/bitmap.width
-                            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, (bitmap.width * k).toInt(), (bitmap.height * k).toInt(), false)
-                            val item = ListItem(scaledBitmap)
-                            itemList.add(item)
-
-                        }.addOnFailureListener{
-                            Toast.makeText(activity?.applicationContext, "Failed", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }*/
-
-
-        }
-
-        //table.addValueEventListener(vListener)
-
-    //}
-
-    /*private fun getMetrics1(): Float {
-        val display = activity?.windowManager?.defaultDisplay
-        val outMetrics: DisplayMetrics = DisplayMetrics()
-        display?.getMetrics(outMetrics)
-        val density: Float = resources.displayMetrics.density
-        val w = outMetrics.widthPixels/density
-        return w.toFloat() - 32
     }
 
-    private fun getDensity(): Float{
-        val display = activity?.windowManager?.defaultDisplay
-        val outMetrics = DisplayMetrics()
-        display?.getMetrics(outMetrics)
-        return resources.displayMetrics.density
-    }*/
+    private fun initRecyclerView(){
+        binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext)
+
+        val lac = LayoutAnimationController(AnimationUtils.loadAnimation(activity, R.anim.slide_in))
+        lac.delay = 0.20f
+        lac.order = LayoutAnimationController.ORDER_NORMAL
+        binding.recView.layoutAnimation = lac
+        val adapter = ExtraRecyclerAdapter(itemLi as ArrayList<ExtraItem>, object : onItemClickListener{
+            override fun OnItemClick(position: Int) {
+                val i = Intent(activity?.applicationContext, WebViewActivity::class.java)
+                i.putExtra("Word", wordLi.get(position))
+                startActivity(i)
+            }
+
+        })
+        binding.recView.adapter = adapter
+    }
+
+    private fun putWordsIntoSharedPrefs(str: String){
+        val sharedPrefs = activity?.getSharedPreferences("dict", Context.MODE_PRIVATE)
+        val s = sharedPrefs?.getString("DictStr", "")
+        val editor = sharedPrefs?.edit()
+        editor.apply {
+            this!!.putString("DictStr", str)
+        }?.apply()
+    }
 }

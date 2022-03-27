@@ -7,12 +7,28 @@
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/ic_baseline_cancel_24.xml" value="0.2703125" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/drawable/splash_screen.xml" value="0.2265" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_authorisation.xml" value="0.2" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_extra_info.xml" value="0.152" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_main.xml" value="0.144" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_profile.xml" value="0.2" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_registration.xml" value="0.2" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_result.xml" value="0.264" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_settings.xml" value="0.190625" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_start_test.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/activity_test.xml" value="0.20588235294117646" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/cards.xml" value="0.20588235294117646" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/dict_item.xml" value="0.20588235294117646" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/download_dial.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/fragment_dict.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/fragment_image_loader.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/fragment_test.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout-large/progress_dialog.xml" value="0.15517241379310345" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_authorisation.xml" value="0.2" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_extra_info.xml" value="0.1" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_profile_editor.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_registration.xml" value="0.4" />
+        <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_registration.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_result.xml" value="0.2" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_settings.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/user/IntelliJIDEAProjects/MyApplication2/app/src/main/res/layout/activity_start_test.xml" value="0.24010416666666667" />

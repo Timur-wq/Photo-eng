@@ -19,9 +19,6 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle): 
             1 ->{
                 Dict()
             }
-            2->{
-                Test()
-            }
             else ->{
                 Fragment()
             }

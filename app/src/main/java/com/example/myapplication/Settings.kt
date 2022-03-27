@@ -3,32 +3,17 @@ package com.example.myapplication
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Contacts
-import android.provider.Settings
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.*
-import androidx.lifecycle.Observer
 import androidx.work.*
 import com.example.myapplication.databinding.ActivitySettingsBinding
-import com.google.android.material.tabs.TabLayoutMediator
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class Settings : AppCompatActivity() {
 

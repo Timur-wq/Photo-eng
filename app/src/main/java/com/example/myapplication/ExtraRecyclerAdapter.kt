@@ -18,7 +18,6 @@ class ExtraRecyclerAdapter(val itemLi: ArrayList<ExtraItem>, private val listene
         var itemTextRu: TextView
         var itemTextEng: TextView
         init {
-            //itemView.setOnClickListener(this)
             itemTextEng = itemView.findViewById(R.id.engW)
             itemTextRu = itemView.findViewById(R.id.ruW)
             itemView.setOnClickListener(this)
@@ -29,12 +28,6 @@ class ExtraRecyclerAdapter(val itemLi: ArrayList<ExtraItem>, private val listene
             listener.OnItemClick(adapterPosition)
         }
 
-        //override fun onClick(view: View?) {
-        //    if(adapterPosition != RecyclerView.NO_POSITION){
-        //        listener.OnItemClick(adapterPosition)
-        //    }
-//
-        //}
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,8 +40,6 @@ class ExtraRecyclerAdapter(val itemLi: ArrayList<ExtraItem>, private val listene
         holder.itemTextEng.text = currentItem.engWord
         holder.itemTextRu.text = currentItem.ruWord
 
-        //val anim = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.slide_in)
-        //holder.itemView.startAnimation(anim)
     }
 
     override fun getItemCount(): Int {

@@ -50,7 +50,10 @@ class Registration : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.imageView.clipToOutline = true
+
+        binding.imageView.clipToOutline = true//чтобы картинка профиля пользователя была скруглённой
+
+        //по нажатию на кнопку осуществляется выбор аватарки пользователя из галереи (предварительно у пользователя запрашивается доступ к галереи)
         binding.button4.setOnClickListener {
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
                 if(checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
@@ -66,6 +69,7 @@ class Registration : AppCompatActivity() {
         }
         initDB()
 
+        //отслеживаем ввод пароля
         binding.pass1.doOnTextChanged { text, start, before, count ->
             if(text?.length!! <= 7){
                 binding.passL.error = resources.getString(R.string.pass_rule)
@@ -73,16 +77,11 @@ class Registration : AppCompatActivity() {
                 binding.passL.error = null
             }
         }
-        //binding.button.visibility = View.INVISIBLE
 
-
-
-        binding.button.setOnClickListener {
+        binding.button.setOnClickListener {//осуществляем регистрацию пользователя, проверяя поля ввода на наличие символов
 
             val user = auth.currentUser
-            user?.sendEmailVerification()
             binding.button.visibility = View.VISIBLE
-            //send verification link
             val email: String = binding.email.text.toString()
             val password: String = binding.pass1.text.toString()
             val name1: String = binding.name1.text.toString()
@@ -104,6 +103,8 @@ class Registration : AppCompatActivity() {
     }
 
     lateinit var options: TranslatorOptions
+
+    //устанавливаем на устройство языковую модель языка, установленного на устройсте
     private fun downloadLangModel(){
         val lang = Locale.getDefault().language
 
@@ -158,14 +159,11 @@ class Registration : AppCompatActivity() {
 
         val storage: FirebaseStorage = FirebaseStorage.getInstance()
         val ref = storage.getReference("avatars/${fileName}")
-        val uri = ref.downloadUrl.toString()
+        val uri = ref.downloadUrl.toString()//получаем ссылку, по которой можно найти изображение в Firebase storage
 
+        loadUserDataToDatabase()
 
-        val tableRef = auth.currentUser?.let { FirebaseDatabase.getInstance().getReference(it.uid) }
-        val appUser = AppUser(binding.name1.text.toString(), binding.name2.text.toString(), binding.email.text.toString(), binding.pass1.text.toString(), imageUri.toString())
-        tableRef?.push()?.setValue(appUser)
-
-        ref.putFile(imageUri).addOnSuccessListener {
+        ref.putFile(imageUri).addOnSuccessListener {//загружаем картинку в Firebase storage
             val i = Intent(this, Authorisation::class.java)
             startActivity(i)
             if(dialog.isShowing){
@@ -176,29 +174,10 @@ class Registration : AppCompatActivity() {
 
     }
 
-
-    private fun putData(){
-
-
-        //val bitmapDrawable = binding.imageView.drawable
-        //val bitmap = bitmapDrawable.toBitmap()
-        //val stream = ByteArrayOutputStream()
-        //bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-        //val arr = stream.toByteArray()
-
-        /*lifecycleScope.launch {
-            val db = Room.databaseBuilder(applicationContext, LocalDB::class.java, "avatars").build()
-            val photoObj = Avatar(Random.nextInt(100), arr)
-            db.getPhoto().insert(photoObj)
-            finish()
-        }*/
-        //lifecycleScope.launch {
-        //    val db = Room.databaseBuilder(applicationContext, Database::class.java, "tunes").build()
-        //    val photoObj = Avatar(Random.nextInt(100), arr, Random.nextInt(100).toString())
-        //    db.playList().insert(photoObj)
-        //    finish()
-        //}
-
+    private fun loadUserDataToDatabase(){//загружаем данные пользователя в поля Realtime database
+        val tableRef = auth.currentUser?.let { FirebaseDatabase.getInstance().getReference(it.uid) }
+        val appUser = AppUser(binding.name1.text.toString(), binding.name2.text.toString(), binding.email.text.toString(), binding.pass1.text.toString(), imageUri.toString())
+        tableRef?.push()?.setValue(appUser)
     }
 
     companion object{

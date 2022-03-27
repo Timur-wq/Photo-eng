@@ -7,8 +7,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import com.example.myapplication.Dialog.AlertDialog
+import com.example.myapplication.AlertDialog.AlertDialog
 import com.example.myapplication.databinding.ActivityTestBinding
 
 class TestActivity : AppCompatActivity(), DialogInterface.OnClickListener {
@@ -107,6 +106,7 @@ class TestActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             }
         }
         else{
+            //отображаем пользователю сообщение, если словарь пустой
             AlertDialog().show(supportFragmentManager, "Empty Dial")
         }
 

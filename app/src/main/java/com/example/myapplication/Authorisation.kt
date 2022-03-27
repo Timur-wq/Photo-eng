@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Gravity
-import android.view.View
 import android.widget.Toast
 import com.example.myapplication.databinding.ActivityAuthorisationBinding
-import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class Authorisation : AppCompatActivity() {
@@ -43,7 +41,7 @@ class Authorisation : AppCompatActivity() {
         }
     }
 
-    fun auth(){
+    private fun auth(){//осуществляем аутентификацию пользователя
         val email = binding.email.text.toString()
         val pass = binding.pass1.text.toString()
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this){task->

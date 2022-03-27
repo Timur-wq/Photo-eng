@@ -6,12 +6,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -26,25 +22,22 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.*
+import com.example.myapplication.MainActivity
 import com.example.myapplication.databinding.FragmentImageLoaderBinding
-import com.example.myapplication.model.PhotoFactory
-import com.example.myapplication.model.PhotoModel
+import com.example.myapplication.photoViewModel.PhotoFactory
+import com.example.myapplication.photoViewModel.PhotoModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.storage.FirebaseStorage
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import kotlinx.android.synthetic.main.fragment_image_loader.*
 import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -67,17 +60,10 @@ class ImageLoader : Fragment() {
     lateinit var mainAnim: Animation
     lateinit var mainAnim1: Animation
 
-    val rectLi = mutableListOf<Rect>()
-    val labelsLi = mutableListOf<String>()
-    var flag = 0
-
     var wordList = mutableListOf<String>()
 
     lateinit var table: DatabaseReference
     lateinit var auth: FirebaseAuth
-
-    var visible = false
-    lateinit var uri: Uri
 
     lateinit var binding: FragmentImageLoaderBinding
     lateinit var bitmapDet: Bitmap
@@ -100,6 +86,13 @@ class ImageLoader : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentImageLoaderBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //ViewModel, которая будет хранить фотографию, выбираемую из галереи, в байтовом массиве
         photoModel = activity?.let { ViewModelProvider(it, PhotoFactory(requireActivity().application, byteArray)).get(PhotoModel::class.java) }!!
         photoModel.liveData.observe(requireActivity(), Observer {
             //val bytes = res?.get(0)?.photo
@@ -112,25 +105,9 @@ class ImageLoader : Fragment() {
                 detect(bitmap)
             }
         })
+        addFeaturesToViewElements()
 
-            anim = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.show_gallery)
-            anim1 = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.hide_gallery)
-            mainAnim = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.rotate_plus)
-            mainAnim1 = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.rotate_plus1)
-
-            binding.cansel.visibility = View.INVISIBLE
-            binding.tick.visibility = View.INVISIBLE
-
-
-
-        binding.cansel.setColorFilter(Color.argb(255, 255, 255, 255))
-        binding.gallery.setColorFilter(Color.argb(255, 255, 255, 255))
-        binding.tick.setColorFilter(Color.argb(255, 255, 255, 255))
-        //val navController = NavHostFragment.findNavController(this)
-        //binding.button2.setOnClickListener { navController.navigate(R.id.imageLoader) }
-        //binding.button3.setOnClickListener { navController.navigate(R.id.dict) }
-        //viewModel = activity?.let { PhotoFactory(it?.application, byteArray) }?.let { ViewModelProvider(it).get(PhotoViewModel::class.java) }!!
-
+        //по нажатию на кнопку осуществляется выбор изображения из галереи (предварительно у пользователя спрашивается разраешение на доступ к галерее)
         binding.gallery.setOnClickListener{
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
                 if(activity?.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
@@ -145,7 +122,7 @@ class ImageLoader : Fragment() {
         }
 
         binding.tick.setOnClickListener{
-            //uploadImage()
+            //загружаем данные в Firebase
             auth = FirebaseAuth.getInstance()
             table = auth.currentUser?.let { it1 -> FirebaseDatabase.getInstance().getReference(it1.uid).child("Dict") }!!
             val dict = Dictonary(wordList)
@@ -159,8 +136,6 @@ class ImageLoader : Fragment() {
             startActivity(i)
             activity!!.finish()
         }
-
-        return binding.root
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -182,9 +157,6 @@ class ImageLoader : Fragment() {
                 val inputStream: InputStream? = activity?.contentResolver?.openInputStream(data?.data!!)
                 val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
 
-                val metrics = DisplayMetrics()
-                val display = activity?.display?.getRealMetrics(metrics)
-
                 binding.imageView4.setImageBitmap(bitmap)
                 bitmapDet = bitmap
 
@@ -196,26 +168,30 @@ class ImageLoader : Fragment() {
                     photoModel.liveData.value = byteArray
                 }
 
-                //val drawable = binding.imageView4.drawable
-                //val bm = drawable.toBitmap()
-                //val stream = ByteArrayOutputStream()
-                //bm.compress(Bitmap.CompressFormat.PNG, 90, stream)
-                //byteArray = stream.toByteArray()
-
             }
         }
     }
+    private fun addFeaturesToViewElements(){
+        anim = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.show_gallery)
+        anim1 = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.hide_gallery)
+        mainAnim = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.rotate_plus)
+        mainAnim1 = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.rotate_plus1)
+
+        binding.cansel.visibility = View.INVISIBLE
+        binding.tick.visibility = View.INVISIBLE
+
+        binding.cansel.setColorFilter(Color.argb(255, 255, 255, 255))
+        binding.gallery.setColorFilter(Color.argb(255, 255, 255, 255))
+        binding.tick.setColorFilter(Color.argb(255, 255, 255, 255))
+    }
+
     private fun detect(bm: Bitmap?){
         binding.gallery.visibility = View.INVISIBLE
 
         val visionImg = FirebaseVisionImage.fromBitmap(bm!!)
         FirebaseVision.getInstance().onDeviceImageLabeler.processImage(visionImg)
             .addOnSuccessListener {
-                val sharedPrefs = activity?.getSharedPreferences("prefs", Context.MODE_PRIVATE)
-                val langId = sharedPrefs?.getInt("Lang", 0)
-                val res = activity?.applicationContext?.resources
-                val langArr = res?.getStringArray(R.array.countries)
-                val lang = langId?.let { langArr?.get(it) }//получаем язык, на который надо перевести
+                val lang = getLanguageFromSettings()//получаем язык, установленный в настройках, на который надо переводить слова
 
 
                 var options = TranslatorOptions.Builder()
@@ -296,21 +272,7 @@ class ImageLoader : Fragment() {
                             val item = ExtraItem(i, it)
                             itemList.add(item)
                             if(j == wordList.size){
-                                binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.VERTICAL, false)
-                                val adapter = ExtraRecyclerAdapter(itemList, object : onItemClickListener{
-                                    override fun OnItemClick(position: Int) {
-                                        val i = Intent(activity?.applicationContext, WebViewActivity::class.java)
-                                        i.putExtra("Word", wordList.get(position))
-                                        startActivity(i)
-                                    }
-
-                                })
-                                binding.recView.adapter = adapter
-
-                                val lac = LayoutAnimationController(AnimationUtils.loadAnimation(activity, R.anim.slide_in))
-                                lac.delay = 0.20f
-                                lac.order = LayoutAnimationController.ORDER_NORMAL
-                                binding.recView.layoutAnimation = lac
+                                initRecyclerView(itemList)
 
                                 binding.cansel.visibility = View.VISIBLE
                                 binding.tick.visibility = View.VISIBLE
@@ -321,86 +283,7 @@ class ImageLoader : Fragment() {
                         }
                 }
 
-
-                //val adapter1 = ExtraRecyclerAdapter(itemList)
-                //Toast.makeText(activity?.applicationContext, "${itemList.isEmpty()}", Toast.LENGTH_SHORT).show()
-
-                /*binding.recView.apply {
-                    adapter = adapter1
-                    binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext)
-                }*/
             }
-
-
-        /*val localModel = LocalModel.Builder()
-            .setAssetFilePath("neiro1.gz")
-            .build()*/
-
-        /*val detectOptions = CustomObjectDetectorOptions.Builder(localModel)
-            .setDetectorMode(CustomObjectDetectorOptions.SINGLE_IMAGE_MODE)
-            .enableMultipleObjects()
-            .enableClassification()
-            .setClassificationConfidenceThreshold(0.8f)
-            .setMaxPerObjectLabelCount(1)
-            .build()
-        val detector = ObjectDetection.getClient(detectOptions)
-
-        val image = InputImage.fromBitmap(bm, 0)
-
-        detector.process(image)
-            .addOnSuccessListener {
-                if (flag == 0) {
-                    for (detectedObject in it) {
-                        val boundingBox = detectedObject.boundingBox
-                        rectLi.add(boundingBox)
-                        val trackingID = detectedObject.trackingId
-                        for (label in detectedObject.labels) {
-                            labelsLi.add(label.text)
-                            Log.d("label", label.text)
-                        }
-                    }
-                    if (binding.drawPlace.childCount > 1) {
-                        binding.drawPlace.removeViewAt(1)
-                    }
-                    if (bm != null) {
-                        initCanvas(bm, rectLi, labelsLi)
-                        flag = 1
-
-                    }
-                }
-            }
-            .addOnFailureListener{
-                Toast.makeText(activity?.applicationContext, resources.getString(R.string.other_image), Toast.LENGTH_SHORT).show()
-            }*/
-
-
-    }
-    @SuppressLint("NewApi")
-    private fun initCanvas(bm: Bitmap, rectLi: MutableList<Rect>, labelsLi: MutableList<String>){
-
-        val ob = BitmapDrawable(resources, bm)
-        binding.imageView4.setImageBitmap(bm)
-        //BitmapDrawable ob = new BitmapDrawable(getResources(), bm);
-        //drawPlace.setBackground(ob);
-        //BitmapDrawable ob = new BitmapDrawable(getResources(), bm);
-        //drawPlace.setBackground(ob);
-
-
-       /* val rectView = CanvasView(
-            activity!!.applicationContext,
-            rectLi,
-            labelsLi,
-            bm,
-            k,
-            binding.imageView4.width,
-            binding.imageView4.height
-        )
-        val lp = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        rectView.setLayoutParams(lp)
-        binding.drawPlace.addView(rectView)*/
-
-        binding.cansel.visibility = View.VISIBLE
-        binding.tick.visibility = View.VISIBLE
     }
 
     fun getParams() = requireArguments().getString(ARG_PARAM1) + " " + requireArguments().getString(ARG_PARAM2)
@@ -437,26 +320,33 @@ class ImageLoader : Fragment() {
             return fragment
         }
     }
-    lateinit var ImgName: String
 
-    private fun uploadImage(){
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmapDet, bitmapDet.width/4, bitmapDet.height/4, false)
-        val formatter = SimpleDateFormat("dd_mm_yyyy_hh_mm")
-        val now = Date()
-        ImgName = formatter.format(now)
-
-        val storage = FirebaseStorage.getInstance()
-        val ref = storage.getReference("/detected/${ImgName}jpg")
-
-        val bytes = ByteArrayOutputStream()
-        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-        val path = MediaStore.Images.Media.insertImage(activity?.applicationContext?.contentResolver, scaledBitmap, "", null)
-        val uri1 = Uri.parse(path)
-
-        ref.putFile(uri1)
-
+    private fun getLanguageFromSettings(): String{
+        val sharedPrefs = activity?.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        val langId = sharedPrefs?.getInt("Lang", 0)
+        val res = activity?.applicationContext?.resources
+        val langArr = res?.getStringArray(R.array.countries)
+        val lang = langId?.let { langArr?.get(it) }
+        return lang.toString()
     }
 
+    private fun initRecyclerView(itemList: ArrayList<ExtraItem>){
+        binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.VERTICAL, false)
+        val adapter = ExtraRecyclerAdapter(itemList, object : onItemClickListener{
+            override fun OnItemClick(position: Int) {
+                val i = Intent(activity?.applicationContext, WebViewActivity::class.java)
+                i.putExtra("Word", wordList.get(position))
+                startActivity(i)
+            }
+
+        })
+        binding.recView.adapter = adapter
+
+        val lac = LayoutAnimationController(AnimationUtils.loadAnimation(activity, R.anim.slide_in))
+        lac.delay = 0.20f
+        lac.order = LayoutAnimationController.ORDER_NORMAL
+        binding.recView.layoutAnimation = lac
+    }
 
 
 }
