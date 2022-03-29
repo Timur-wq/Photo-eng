@@ -6,6 +6,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+    <com.google.android.material.floatingactionbutton.FloatingActionButton android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_baseline_done_24"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="30dp"
+        app:backgroundTint="@color/floating_button"
+        app:rippleColor="#FFFFFF"
+        android:id="@+id/tick"
+        />
     <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" tools:layout_editor_absoluteX="16dp"
-            app:layout_constraintVertical_bias="0.622" android:background="@drawable/profile_lines">
+            app:layout_constraintVertical_bias="0.622">
         <LinearLayout
                 android:padding="10dp"
                 android:gravity="center"
@@ -110,18 +120,6 @@
                     android:ems="10"
                     android:id="@+id/pass1" android:layout_weight="1" android:background="#FFF"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:gravity="center">
-            <Button
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="10dp"
-                    android:text="@string/reg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/button"
-                    android:layout_gravity="center_horizontal" android:textSize="18dp"/>
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

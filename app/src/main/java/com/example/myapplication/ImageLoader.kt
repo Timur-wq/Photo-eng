@@ -188,11 +188,10 @@ class ImageLoader : Fragment() {
     private fun detect(bm: Bitmap?){
         binding.gallery.visibility = View.INVISIBLE
 
-        val visionImg = FirebaseVisionImage.fromBitmap(bm!!)
+        val visionImg = FirebaseVisionImage.fromBitmap(bm!!)//bm - картинка типа Bitmap
         FirebaseVision.getInstance().onDeviceImageLabeler.processImage(visionImg)
             .addOnSuccessListener {
                 val lang = getLanguageFromSettings()//получаем язык, установленный в настройках, на который надо переводить слова
-
 
                 var options = TranslatorOptions.Builder()
                     .setSourceLanguage(TranslateLanguage.ENGLISH)

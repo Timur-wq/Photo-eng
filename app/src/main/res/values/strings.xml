@@ -8,6 +8,15 @@
         <item name="bl">Белорусский</item>
     </string-array>
 
+    <string-array name="professions">
+        <item name="IT">IT-специалист</item>
+        <item name="jurist">Юрист</item>
+        <item name="engineer">Инженер</item>
+        <item name="accounter">Бухгалтер</item>
+        <item name="economist">Экономист</item>
+        <item name="designer">Дизайнер</item>
+    </string-array>
+
     <string name="set_lang">Язык перевода</string>
     <string name="allow_noti">Уведомления</string>
 
@@ -16,6 +25,7 @@
 
     <string name="add">Добавить</string>
     <string name="dict">Словарь</string>
+    <string name="basis">Базис</string>
 
     <string name="change">Изменить</string>
     <string name="save">Сохранить</string>
@@ -42,5 +52,9 @@
     <string name="confirm_email">Подтвердить email</string>
 
     <string name="testing">тестирование</string>
+    <string name="prof_list">желаемая профессия</string>
+
+    <string name="student">школьник 1-4 класс</string>
+    <string name="other">карьерист</string>
 
 </resources>

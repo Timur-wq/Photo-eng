@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +54,8 @@ class Registration : AppCompatActivity() {
 
         binding.imageView.clipToOutline = true//чтобы картинка профиля пользователя была скруглённой
 
+        binding.tick?.setColorFilter(Color.argb(255, 255, 255, 255))
+
         //по нажатию на кнопку осуществляется выбор аватарки пользователя из галереи (предварительно у пользователя запрашивается доступ к галереи)
         binding.button4.setOnClickListener {
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
@@ -78,10 +81,9 @@ class Registration : AppCompatActivity() {
             }
         }
 
-        binding.button.setOnClickListener {//осуществляем регистрацию пользователя, проверяя поля ввода на наличие символов
+        binding.tick?.setOnClickListener {//осуществляем регистрацию пользователя, проверяя поля ввода на наличие символов
 
             val user = auth.currentUser
-            binding.button.visibility = View.VISIBLE
             val email: String = binding.email.text.toString()
             val password: String = binding.pass1.text.toString()
             val name1: String = binding.name1.text.toString()
@@ -164,7 +166,7 @@ class Registration : AppCompatActivity() {
         loadUserDataToDatabase()
 
         ref.putFile(imageUri).addOnSuccessListener {//загружаем картинку в Firebase storage
-            val i = Intent(this, Authorisation::class.java)
+            val i = Intent(this, ExtraReg::class.java)
             startActivity(i)
             if(dialog.isShowing){
                 dialog.dismiss()

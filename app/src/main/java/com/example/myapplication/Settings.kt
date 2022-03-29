@@ -17,13 +17,9 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 
 class Settings : AppCompatActivity() {
 
-    val CHANNEL_ID = "CHANNEL_ID"
     var language: Int = 0
-    var allowNoti: Boolean = false
 
     lateinit var dialog: Dialog
-
-    lateinit var manager: AlarmManager
 
 
     lateinit var binding: ActivitySettingsBinding
@@ -54,7 +50,6 @@ class Settings : AppCompatActivity() {
         }
         binding.tick.setColorFilter(Color.argb(255, 255, 255, 255))
 
-        //createNotificationChannel()
         binding.langSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?){
 
@@ -206,7 +201,6 @@ class Settings : AppCompatActivity() {
     private fun loadSettings(){
         val sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         language = sharedPrefs.getInt("Lang", 0)
-        allowNoti = sharedPrefs.getBoolean("AllowNoti", false)
         binding.apply {
             langSpinner.setSelection(language)
         }

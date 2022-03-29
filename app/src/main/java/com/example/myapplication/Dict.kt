@@ -96,7 +96,7 @@ class Dict : Fragment() {
             return fragment
         }
     }
-    var lablesLi = mutableListOf<MutableList<String>>()
+    var lablesLi = mutableListOf<MutableList<String>>()//структура данных Изменяемый список
     var wordLi = mutableListOf<String>()
     var itemLi = mutableListOf<ExtraItem>()
 
@@ -192,7 +192,7 @@ class Dict : Fragment() {
         var j = 0
 
         if(wordLi.size > 0) {
-            wordLi = wordLi.distinct() as MutableList<String>
+            wordLi = wordLi.distinct() as MutableList<String>//комаеда distinct создаёт множестов, то есть исключает повторяющиеся слова, если они есть
         }
         var str = ""
 

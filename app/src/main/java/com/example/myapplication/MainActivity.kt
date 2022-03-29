@@ -68,11 +68,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 2->{
                     if(lang.equals("ru")) {
-                        tab.text = "Тестирование"
+                        tab.text = "Базис"
                     }else if(lang.equals("be")){
-                        tab.text = "Тэсціраванне"
+                        tab.text = "Базіс"
                     }else if(lang.equals("uk")){
-                        tab.text = "Тестування"
+                        tab.text = "Базис"
                     }
                 }
             }

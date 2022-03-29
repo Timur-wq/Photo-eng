@@ -8,6 +8,15 @@
         <item name="bl">Білоруська мова</item>
     </string-array>
 
+    <string-array name="professions">
+        <item name="IT">IT-спеціаліст</item>
+        <item name="jurist">Юрист</item>
+        <item name="engineer">Інженер</item>
+        <item name="accounter">Бухгалтер</item>
+        <item name="economist">Економіст</item>
+        <item name="designer">Дизайнер</item>
+    </string-array>
+
     <string name="set_lang">Мова перекладу</string>
     <string name="allow_noti">Повідомлення</string>
 
@@ -16,6 +25,7 @@
 
     <string name="add">Додати</string>
     <string name="dict">Словник</string>
+    <string name="basis">Базис</string>
 
     <string name="change">Редагувати</string>
     <string name="save">Зберегти зміни</string>
@@ -43,4 +53,8 @@
     <string name="testing">тестування</string>
 
     <string name="res">Результат</string>
+    <string name="prof_list">бажана професія</string>
+
+    <string name="student">школяр 1-4 клас</string>
+    <string name="other">карєрист</string>
 </resources>

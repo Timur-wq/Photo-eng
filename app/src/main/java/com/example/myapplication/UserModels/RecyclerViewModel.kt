@@ -29,19 +29,12 @@ class RecyclerViewModel(app: Application): AndroidViewModel(app) {
     fun loadData(){
         auth = FirebaseAuth.getInstance()
         table = FirebaseDatabase.getInstance().getReference(auth?.uid!!).child("Dict")
-        val vListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (i in snapshot.children) {
-                    var model = i.getValue(Dictonary::class.java)
-                    model?.wordList?.let { lablesLi.add(it) }
-                }
-                translatorData.postValue(lablesLi)
+        table.get().addOnSuccessListener {
+            for (i in it.children) {
+                var model = i.getValue(Dictonary::class.java)
+                model?.wordList?.let { lablesLi.add(it) }
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+            translatorData.postValue(lablesLi)
         }
-        table.addValueEventListener(vListener)
     }
 }

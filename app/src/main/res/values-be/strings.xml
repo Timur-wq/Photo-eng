@@ -8,6 +8,15 @@
         <item name="bl">Беларуская мова</item>
     </string-array>
 
+    <string-array name="professions">
+        <item name="IT">IT-спецыяліст</item>
+        <item name="jurist">Юрыст</item>
+        <item name="engineer">Інжынер</item>
+        <item name="accounter">Бухгалтар</item>
+        <item name="economist">Эканаміст</item>
+        <item name="designer">Дызайнер</item>
+    </string-array>
+
     <string name="set_lang">Мова перекладу</string>
     <string name="allow_noti">Апавяшчэння</string>
 
@@ -16,6 +25,7 @@
 
     <string name="add">Дадаць</string>
     <string name="dict">Слоўнік</string>
+    <string name="basis">Базіс</string>
 
     <string name="change">Рэдагаваць</string>
     <string name="save">Захаваць змены</string>
@@ -42,4 +52,8 @@
     <string name="testing">тэсціраванне</string>
 
     <string name="res">Вынік</string>
+    <string name="prof_list">жаданая прафесія</string>
+
+    <string name="student">школьнік 1-4 клас</string>
+    <string name="other">карерыст</string>
 </resources>
