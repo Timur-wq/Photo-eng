@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.example.myapplication.databinding.ActivityAuthorisationBinding
 import com.google.firebase.auth.FirebaseAuth
 
+
+//экран авторизации пользователя
 class Authorisation : AppCompatActivity() {
     lateinit var binding: ActivityAuthorisationBinding
 
@@ -20,12 +22,12 @@ class Authorisation : AppCompatActivity() {
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
-        if(currentUser != null){
+        if(currentUser != null){//если пользователь авторизован, то открываем главную страницу приложения
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
         }else{
             binding.buttonAuth.setOnClickListener { auth() }
-            binding.button.setOnClickListener {
+            binding.button.setOnClickListener {//открываем страницу регистрации
                 val i: Intent = Intent(this, Registration::class.java)
                 startActivity(i)
                 finish()

@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
+//экран регистрации пользователя
 class Registration : AppCompatActivity() {
     //database
     lateinit var table: DatabaseReference
@@ -166,6 +167,7 @@ class Registration : AppCompatActivity() {
         loadUserDataToDatabase()
 
         ref.putFile(imageUri).addOnSuccessListener {//загружаем картинку в Firebase storage
+            //открываем экран с полями ввода дополнительной информации
             val i = Intent(this, ExtraReg::class.java)
             startActivity(i)
             if(dialog.isShowing){

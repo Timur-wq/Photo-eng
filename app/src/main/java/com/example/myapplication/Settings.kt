@@ -15,6 +15,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
 
+//экран - страница настроек приложения
 class Settings : AppCompatActivity() {
 
     var language: Int = 0
@@ -31,6 +32,8 @@ class Settings : AppCompatActivity() {
         binding.bottomNavigation.selectedItemId = R.id.settings
         var i: Intent
         loadSettings()
+
+        //навигация по нижней панели
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
@@ -50,6 +53,7 @@ class Settings : AppCompatActivity() {
         }
         binding.tick.setColorFilter(Color.argb(255, 255, 255, 255))
 
+        //отслеживаем выбранный из выпадающего списка язык
         binding.langSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?){
 
@@ -68,6 +72,7 @@ class Settings : AppCompatActivity() {
             dialog.setCancelable(false)
             dialog.show()
 
+            //ocуществляем загрузку языковой модели того языка, который был выбран из выпадающего списка
             val lang = binding.langSpinner.getItemAtPosition(language).toString()
             var options: TranslatorOptions = TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -145,10 +150,6 @@ class Settings : AppCompatActivity() {
                 }.addOnFailureListener{
 
                 }
-
-
-            //saveSettings()
-            //Toast.makeText(applicationContext, "Настройки сохранены", Toast.LENGTH_SHORT).show()
         }
 
 

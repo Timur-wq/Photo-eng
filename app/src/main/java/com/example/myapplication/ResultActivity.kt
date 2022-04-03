@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
+//экран, отображающий результат теста по словарю в виде анимированной круговой диаграмы
 class ResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,7 @@ class ResultActivity : AppCompatActivity() {
         val tvRes = findViewById<TextView>(R.id.textView5)
         tvRes.text = (100*(size-mistakes)/size).toString() + "%"
 
+        //инициализируем круговую диаграму
         val circularProgressBar = findViewById<CircularProgressBar>(R.id.cpb)
         circularProgressBar.apply {
             progress = 0f

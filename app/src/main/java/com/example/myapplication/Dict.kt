@@ -69,7 +69,7 @@ class Dict : Fragment() {
         dialog = activity?.let { Dialog(it) }!!//инициализируем диалог, который будет отображаться во время загрузки
         initLoadingDialog(dialog)
 
-        //загружаем словарь с Firebase через ViewModel
+        //как только viewModel загрузит словарь, слова в который мы добавляли сами, то запустится функция по их переводу
         recyclerViewModel.translatorData.observe(activity as LifecycleOwner, {
             translate(it)
         })
@@ -106,6 +106,7 @@ class Dict : Fragment() {
         dialog.show()
     }
 
+    //узнаём, какой язык перевода установлен в настройках
     private fun getLanguageFromSettings(): String{
         val sharedPrefs = activity?.getSharedPreferences("prefs", Context.MODE_PRIVATE)
         val langId = sharedPrefs?.getInt("Lang", 0)
@@ -114,6 +115,8 @@ class Dict : Fragment() {
         val lang = langId?.let { langArr?.get(it) }
         return lang.toString()
     }
+
+    //осуществляем перевод загруженных слов
     private fun translate(wordLi1: MutableList<MutableList<String>>){
         if(dialog.isShowing){
             dialog.dismiss()
@@ -214,6 +217,7 @@ class Dict : Fragment() {
         }
     }
 
+    //инициализируем список слов из загруженного словаря (список всплывает анимированно)
     private fun initRecyclerView(){
         binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext)
 

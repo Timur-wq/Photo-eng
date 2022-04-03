@@ -15,6 +15,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
 
+//класс view-модели, осуществляющий загрузку данных из Firebase Realtime Database
 class RecyclerViewModel(app: Application): AndroidViewModel(app) {
     var translatorData: MutableLiveData<MutableList<MutableList<String>>>
     lateinit var table: DatabaseReference

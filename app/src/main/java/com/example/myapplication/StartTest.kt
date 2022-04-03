@@ -16,6 +16,8 @@ class StartTest : AppCompatActivity() {
         binding.bottomNavigation.background = null
         var i: Intent
         binding.bottomNavigation.selectedItemId = R.id.extra
+
+        //навигация по нижней панели
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.settings ->{

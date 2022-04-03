@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import java.util.*
 
+//главная страница
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.background = null
         var i: Intent
         binding.bottomNavigation.selectedItemId = R.id.home
+
+        //навигация по нижней панели
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.settings ->{
@@ -46,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         binding.vp2.adapter = adapter
 
         val lang = Locale.getDefault().language
+
+        //навигация по верхней панели
         TabLayoutMediator(binding.tl, binding.vp2){tab, position ->
             when(position){
                 0 ->{

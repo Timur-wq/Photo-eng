@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -49,22 +52,10 @@
             android:value="label" />
 
         <activity
-            android:name=".ExtraInfo"
-            android:screenOrientation="portrait" />
-
-        <receiver android:name=".MyRec" />
-
-        <activity
-            android:name=".ProfileEditor"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Registration"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Authorisation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Profile"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Settings"
@@ -73,13 +64,6 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
 
-        <receiver
-            android:name=".alarm.AlarmReceiver"
-            android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

@@ -28,6 +28,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Basis.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+//экран, отображающий базовый словарь
 class Basis : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -60,6 +62,7 @@ class Basis : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //в базе данных хранится число, обозначающее тип словаря, который нужно отображать в разделе базис и мы его получаем в следующих строчках
         auth = FirebaseAuth.getInstance()
         table = FirebaseDatabase.getInstance().getReference(auth?.uid!!).child("BasisType")
         table.get().addOnSuccessListener {
@@ -96,7 +99,7 @@ class Basis : Fragment() {
         }
     }
 
-    //загружаем строку - базовый словарь со словами-переводами на русском языке через точку с запятой из базы данных
+    //загружаем строку из Firebase Realtime Database - базовый словарь со словами-переводами на русском языке через точку с запятой из базы данных
     private fun loadRuData(id: String){
         var strRu = ""
         var id1 = id + 't'
@@ -127,6 +130,7 @@ class Basis : Fragment() {
         dialog.show()
     }
 
+    //инициализируем список слов из загруженного словаря (список всплывает анимированно)
     private fun initRecyclerView(){
         binding.recView.layoutManager = LinearLayoutManager(activity?.applicationContext)
 
@@ -145,6 +149,7 @@ class Basis : Fragment() {
         binding.recView.adapter = adapter
     }
 
+    //сохраняем список слов локально на устройстве
     private fun putWordsIntoSharedPrefs(str: String){
         val sharedPrefs = activity?.getSharedPreferences("dict", Context.MODE_PRIVATE)
         val s = sharedPrefs?.getString("DictStr", "")

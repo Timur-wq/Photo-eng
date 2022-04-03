@@ -51,6 +51,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ImageLoader.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+//экран раздела "Добавить"
 class ImageLoader : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = "null"
@@ -171,6 +173,8 @@ class ImageLoader : Fragment() {
             }
         }
     }
+
+    //добавляем анимацию на view-элементы
     private fun addFeaturesToViewElements(){
         anim = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.show_gallery)
         anim1 = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.hide_gallery)
@@ -254,7 +258,6 @@ class ImageLoader : Fragment() {
                             .build()
                     }
                 }
-                //Toast.makeText(activity?.applicationContext, "${it.get(0).text}", Toast.LENGTH_SHORT).show()
 
                 for(i in it){
                     wordList.add(i.text)

@@ -10,6 +10,7 @@ import android.view.View
 import com.example.myapplication.AlertDialog.AlertDialog
 import com.example.myapplication.databinding.ActivityTestBinding
 
+//тестирование по 10 словам
 class TestActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     lateinit var binding: ActivityTestBinding
 
@@ -19,12 +20,13 @@ class TestActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         setContentView(binding.root)
 
         val sharedPrefs = getSharedPreferences("dict", Context.MODE_PRIVATE)
-        val str = sharedPrefs?.getString("DictStr", "")
-        //Toast.makeText(activity?.applicationContext, "$str", Toast.LENGTH_SHORT).show()
+        val str = sharedPrefs?.getString("DictStr", "")//получаем строку, состоящую из слов, которые будут предложены на тестирование.
+
         if(str?.length!! > 0){
             var wordList: MutableList<String> = str?.split(";") as MutableList<String>
             binding.ok.visibility = View.INVISIBLE
-            //тестирование по 10 словам
+
+            //выбираем 10 слов для тестирования
             val newWordList = mutableListOf<String>()
             wordList.removeAt(wordList.size-1)
             if(wordList?.size!! > 10){
@@ -68,6 +70,8 @@ class TestActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             }
             var incorrect = 0
 
+            //по нажатию на кнопку "ОК" проверяем корректность написания перевода слова
+            //также считаем количество правильных и неправильных ответов
             binding.ok.setOnClickListener{
                 binding.howCorrect.text = ""
                 binding.ok.visibility = View.INVISIBLE
@@ -87,10 +91,8 @@ class TestActivity : AppCompatActivity(), DialogInterface.OnClickListener {
                     editor.apply {
                         putString("DictStr", str1)
                     }.apply()
-                    //val intent = Intent(activity?.applicationContext, MainActivity::class.java)
-                    //startActivity(intent)
-                    //activity?.finish()
 
+                    //переходим на следующий экран, где отобразим количктсво правильных и неправильных ответов
                     val intent = Intent(applicationContext, ResultActivity::class.java)
                     intent.putExtra("size", newWordList.size)
                     intent.putExtra("mistakes", incorrect)
