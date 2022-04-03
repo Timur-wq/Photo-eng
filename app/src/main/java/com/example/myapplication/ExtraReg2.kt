@@ -9,10 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import com.example.myapplication.databinding.ActivityExtraReg2Binding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class ExtraReg2 : AppCompatActivity() {
 
     lateinit var binding: ActivityExtraReg2Binding
+
+    lateinit var table: DatabaseReference
+    lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExtraReg2Binding.inflate(layoutInflater)
@@ -34,11 +40,10 @@ class ExtraReg2 : AppCompatActivity() {
         }
 
         binding.tick.setOnClickListener {
-            val sharedPrefs = getSharedPreferences("profs", Context.MODE_PRIVATE)
-            val editor = sharedPrefs.edit()
-            editor.apply{
-                putInt("Prof", profSphere)
-            }.apply()
+            auth = FirebaseAuth.getInstance()
+            table = auth.currentUser?.let { it1 -> FirebaseDatabase.getInstance().getReference(it1.uid).child("BasisType") }!!
+            val basisType = BasisType(profSphere)
+            table.push().setValue(basisType)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()

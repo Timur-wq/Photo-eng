@@ -8,8 +8,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import com.example.myapplication.databinding.ActivityExtraRegBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class ExtraReg : AppCompatActivity() {
+
+    lateinit var table: DatabaseReference
+    lateinit var auth: FirebaseAuth
+
     lateinit var binding: ActivityExtraRegBinding
     var profSphere: Int = 0
 
@@ -32,12 +39,12 @@ class ExtraReg : AppCompatActivity() {
         }
 
         binding.tick.setOnClickListener {
+
+            auth = FirebaseAuth.getInstance()
+            table = auth.currentUser?.let { it1 -> FirebaseDatabase.getInstance().getReference(it1.uid).child("BasisType") }!!
             if (profSphere == 0){
-                val sharedPrefs = getSharedPreferences("profs", Context.MODE_PRIVATE)
-                val editor = sharedPrefs.edit()
-                editor.apply{
-                    putInt("Prof", 6)
-                }.apply()
+                val basisType = BasisType(6)
+                table.push().setValue(basisType)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()

@@ -56,4 +56,6 @@
 
     <string name="student">школьнік 1-4 клас</string>
     <string name="other">карерыст</string>
+
+    <string name="not_added">Дадзены слоўнік буднт дададзены ў бліжэйшы час.</string>
 </resources>

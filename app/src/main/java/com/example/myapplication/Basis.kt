@@ -13,7 +13,10 @@ import android.view.animation.LayoutAnimationController
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentBasisBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +32,9 @@ class Basis : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var table: DatabaseReference
+    lateinit var auth: FirebaseAuth
 
     lateinit var dialog: Dialog
 
@@ -53,43 +59,33 @@ class Basis : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val sharedPrefs = activity?.getSharedPreferences("profs", Context.MODE_PRIVATE)
-        var profSphereId = sharedPrefs?.getInt("Prof", 0)
-        when(profSphereId){
-            0 ->{
-                loadData(profSphereId.toString())
 
-                dialog = activity?.let { Dialog(it) }!!//инициализируем диалог, который будет отображаться во время загрузки
-                initLoadingDialog(dialog)
+        auth = FirebaseAuth.getInstance()
+        table = FirebaseDatabase.getInstance().getReference(auth?.uid!!).child("BasisType")
+        table.get().addOnSuccessListener {
+            for(i in it.children){
+                var model = i.getValue(BasisType::class.java)
+                val lang = Locale.getDefault().language
+                if(model?.basisType!! <= 1 && lang.equals("ru")){
+                    dialog = activity?.let { Dialog(it) }!!//инициализируем диалог, который будет отображаться во время загрузки
+                    initLoadingDialog(dialog)
+                    loadData(model.basisType.toString())
+                }
+                else{
+                    //на данный момент ещё не все словари добавленыв базу данных, поэтому выводится следующее сообщение
+                    Toast.makeText(activity?.applicationContext, "Данный словарь ещё не добавлен", Toast.LENGTH_LONG).show()
+                }
             }
-            1->{
-                loadData(profSphereId.toString())
 
-                dialog = activity?.let { Dialog(it) }!!//инициализируем диалог, который будет отображаться во время загрузки
-                initLoadingDialog(dialog)
-            }
-            2->{
-                Toast.makeText(activity?.applicationContext, "Данный раздел ещё не добавлен", Toast.LENGTH_LONG).show()
-            }
-            3->{
-                Toast.makeText(activity?.applicationContext, "Данный раздел ещё не добавлен", Toast.LENGTH_LONG).show()
-            }
-            4->{
-                Toast.makeText(activity?.applicationContext, "Данный раздел ещё не добавлен", Toast.LENGTH_LONG).show()
-            }
-            5->{
-                Toast.makeText(activity?.applicationContext, "Данный раздел ещё не добавлен", Toast.LENGTH_LONG).show()
-            }
         }
-
     }
 
-    lateinit var table: DatabaseReference
 
     lateinit var EnList: List<String>
     lateinit var RuList: List<String>
     var listOfExtra: MutableList<ExtraItem> = mutableListOf<ExtraItem>()
 
+    //загружаем строку - базовый словарь со словами на английском языке через точку с запятой из базы данных
     private fun loadData(id: String){
         var strEN = ""
         table = FirebaseDatabase.getInstance().getReference(id)
@@ -100,6 +96,7 @@ class Basis : Fragment() {
         }
     }
 
+    //загружаем строку - базовый словарь со словами-переводами на русском языке через точку с запятой из базы данных
     private fun loadRuData(id: String){
         var strRu = ""
         var id1 = id + 't'
